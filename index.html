@@ -1,68 +1,94 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mis Enlaces</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enlaces de Acceso Rápido</title>
+    <!-- Carga de Tailwind CSS para un diseño responsivo y moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Estilo general para usar la fuente Inter */
         body {
-            margin: 0;
-            padding: 0;
-            background: #f7f7f7;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 480px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        h1 {
-            font-size: 28px;
-            font-weight: bold;
-            color: #1e3a5f;
-            margin-bottom: 30px;
-        }
-
-        .btn {
-            display: block;
-            background: #1e3a5f;
-            color: white;
-            text-decoration: none;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-size: 18px;
-            transition: 0.2s ease-in-out;
-        }
-
-        .btn:hover {
-            background: #2c4f80;
-        }
-
-        footer {
-            margin-top: 40px;
-            font-size: 14px;
-            color: #555;
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9; /* Fondo muy claro */
+            min-height: 100vh;
         }
     </style>
 </head>
+<body class="flex items-center justify-center p-4">
+    <!-- Contenedor principal centrado, responsivo y con sombra -->
+    <div class="w-full max-w-2xl bg-white p-6 md:p-10 rounded-xl shadow-2xl">
+        
+        <!-- Título principal -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-blue-800 tracking-tight">
+                Portal de Acceso Rápido 
+            </h1>
+            <p class="text-gray-500 mt-2 text-lg">
+                Selecciona la acción que deseas realizar.
+            </p>
+        </header>
 
-<body>
-    <div class="container">
-        <h1>Mis Recursos y Enlaces</h1>
+        <!-- Contenedor de botones (usa grid para mejor disposición en pantallas grandes) -->
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            
+            <!-- Botón 1: Registro de Pacientes (Formulario) -->
+            <a href="https://forms.gle/LvPrUQEiRVeB1LmF9" target="_blank" 
+               class="flex items-center justify-center p-4 text-center font-semibold text-white transition duration-300 ease-in-out transform hover:scale-[1.02] 
+                      bg-green-600 hover:bg-green-700 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Registro de Pacientes (Formulario)
+            </a>
 
-        <a class="btn" href="LINK1" target="_blank">Recurso 1</a>
-        <a class="btn" href="LINK2" target="_blank">Recurso 2</a>
-        <a class="btn" href="LINK3" target="_blank">Recurso 3</a>
-        <a class="btn" href="LINK4" target="_blank">Recurso 4</a>
-        <a class="btn" href="LINK5" target="_blank">Recurso 5</a>
+            <!-- Botón 2: Acceso a Base de Datos (Lector) -->
+            <a href="https://docs.google.com/spreadsheets/d/1r6e5ONlUgOOWc3Zr6sDL3yS_I3qRm9_P5wIidaEOdOE/edit?usp=sharing" target="_blank" 
+               class="flex items-center justify-center p-4 text-center font-semibold text-white transition duration-300 ease-in-out transform hover:scale-[1.02] 
+                      bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                Acceso a Base de Datos (Lector)
+            </a>
 
-        <footer>
-            © 2025 — Sitio profesional
+            <!-- Botón 3: Tabla de Pacientes (Editor) -->
+            <a href="https://docs.google.com/spreadsheets/d/1YN2-pa3T2yB3IzuRPKTJbR4Z04oK3AG6pQObl3Wiw-g/edit?usp=drivesdk" target="_blank" 
+               class="flex items-center justify-center p-4 text-center font-semibold text-white transition duration-300 ease-in-out transform hover:scale-[1.02] 
+                      bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7h16M4 7L10 9M16 7L10 9m0 0v10" />
+                </svg>
+                Tabla de Pacientes (Edición)
+            </a>
+
+            <!-- Botón 4: Documento de Rotación -->
+            <a href="https://docs.google.com/document/d/1JRKPYlIlgw8_tALdkRFm2YWXE6TX8pLh/edit" target="_blank" 
+               class="flex items-center justify-center p-4 text-center font-semibold text-gray-800 transition duration-300 ease-in-out transform hover:scale-[1.02] 
+                      bg-yellow-400 hover:bg-yellow-500 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-yellow-300 focus:ring-opacity-50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Documento de Rotación
+            </a>
+
+            <!-- Botón 5: Carpeta para Subir Presentaciones -->
+            <a href="https://drive.google.com/drive/folders/1mn-FFcPTzDQM6YDibGQbRrXks2q0Mptk?usp=drive_link" target="_blank" 
+               class="flex items-center justify-center p-4 text-center font-semibold text-white transition duration-300 ease-in-out transform hover:scale-[1.02] 
+                      bg-red-500 hover:bg-red-600 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-red-400 focus:ring-opacity-50 md:col-span-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+                Carpeta para Subir Presentaciones
+            </a>
+            
+        </div>
+        
+        <!-- Pie de página con recordatorio -->
+        <footer class="mt-8 pt-4 border-t border-gray-200 text-center text-sm text-gray-400">
+            <p>Todos los enlaces se abren en una nueva pestaña.</p>
         </footer>
     </div>
 </body>
