@@ -16,10 +16,7 @@
             --success: #2e7d32;
         }
 
-        /* Reset global para evitar desbordamientos por padding */
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -30,7 +27,6 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            /* Evita el scroll horizontal accidental */
             overflow-x: hidden;
         }
 
@@ -42,14 +38,10 @@
             display: flex;
             overflow-x: auto;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            /* Mejora el scroll en móviles */
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Ocultar barra de scroll en nav para estética */
-        nav::-webkit-scrollbar {
-            display: none;
-        }
+        nav::-webkit-scrollbar { display: none; }
 
         .tab-btn {
             flex: 1;
@@ -71,14 +63,29 @@
             background: rgba(255,255,255,0.1);
         }
 
+        .search-container {
+            padding: 10px 15px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #scaleSearch {
+            width: 100%;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
         .container {
             max-width: 750px;
-            width: 100%; /* Ocupa todo el ancho en móviles */
+            width: 100%;
             margin: 0 auto;
             background: var(--card-bg);
-            padding: 20px 15px; /* Padding ajustado para bordes de móvil */
+            padding: 20px 15px;
             display: none;
-            min-height: calc(100vh - 50px);
+            min-height: calc(100vh - 110px);
         }
 
         .container.active { display: block; }
@@ -127,7 +134,7 @@
             border-bottom: 1px solid #eee; 
         }
 
-        .label, .item-label { 
+        .label, .item-label, .question-text { 
             font-weight: 600; 
             display: block; 
             margin-bottom: 6px; 
@@ -149,7 +156,7 @@
             padding: 12px; 
             border-radius: 8px; 
             border: 1px solid #ccc; 
-            font-size: 1rem; /* Importante para evitar zoom automático en iOS */
+            font-size: 1rem; 
             background-color: #fcfcfc; 
             cursor: pointer;
             appearance: none;
@@ -159,71 +166,41 @@
             background-size: 1em;
         }
 
-        .options { 
-            display: flex; 
-            gap: 8px; 
-            flex-wrap: wrap; /* Permite que los botones bajen si no caben */
-        }
-        
+        .options { display: flex; gap: 8px; flex-wrap: wrap; }
         .options input[type="radio"] { display: none; }
-        
         .options label { 
-            flex: 1; 
-            min-width: 80px;
-            text-align: center; 
-            padding: 12px 5px; 
-            background: #f8f9fa; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 0.9rem; 
+            flex: 1; min-width: 80px; text-align: center; padding: 12px 5px; 
+            background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; 
+            cursor: pointer; font-size: 0.9rem; 
         }
 
         .options input[type="radio"]:checked + label { 
-            background: var(--accent); 
-            color: white; 
-            border-color: #2980b9; 
+            background: var(--accent); color: white; border-color: #2980b9; 
         }
 
         .result-panel { 
-            position: sticky; 
-            bottom: 15px; 
-            background: var(--primary); 
-            color: white; 
-            padding: 15px; 
-            border-radius: 12px; 
-            text-align: center; 
-            margin-top: 30px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
-            z-index: 900;
+            position: sticky; bottom: 15px; background: var(--primary); color: white; 
+            padding: 15px; border-radius: 12px; text-align: center; margin-top: 30px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 900;
         }
 
         .total-score { font-size: 2.2rem; font-weight: bold; margin: 5px 0; }
         .interpretation { font-weight: bold; font-size: 1rem; }
         
         .status-positive { 
-            background: var(--danger); 
-            padding: 4px 10px; 
-            border-radius: 4px; 
-            display: inline-block;
-            margin-top: 5px;
+            background: var(--danger); padding: 4px 10px; border-radius: 4px; 
+            display: inline-block; margin-top: 5px;
         }
 
         .warning { 
-            color: var(--danger); 
-            font-weight: bold; 
-            text-align: center; 
-            border: 2px solid var(--danger); 
-            padding: 10px; 
-            border-radius: 8px; 
-            margin-bottom: 15px; 
-            display: none; 
+            color: var(--danger); font-weight: bold; text-align: center; 
+            border: 2px solid var(--danger); padding: 10px; border-radius: 8px; 
+            margin-bottom: 15px; display: none; 
         }
 
         .additional-questions { opacity: 0.5; transition: opacity 0.3s ease; pointer-events: none; }
         .active-section { opacity: 1; pointer-events: auto; }
 
-        /* Ajustes finales para pantallas muy pequeñas */
         @media (max-width: 380px) {
             .tab-btn { padding: 12px 8px; font-size: 0.75rem; }
             h1 { font-size: 1.1rem; }
@@ -233,95 +210,159 @@
 </head>
 <body>
 
-<nav>
+<nav id="mainNav">
     <button class="tab-btn active" onclick="openTab(event, 'bush')">Bush-Francis</button>
-    <button class="tab-btn" onclick="openTab(event, 'paws')">PAWS</button>
     <button class="tab-btn" onclick="openTab(event, 'ciwa')">CIWA-Ar</button>
     <button class="tab-btn" onclick="openTab(event, 'cows')">COWS</button>
+    <button class="tab-btn" onclick="openTab(event, 'paws')">PAWS</button>
+    <button class="tab-btn" onclick="openTab(event, 'des')">DES</button>
+    <button class="tab-btn" onclick="openTab(event, 'pcl5')">PCL-5</button>
 </nav>
 
-<div id="bush" class="container active">
-    <h1>Escala de Bush-Francis</h1>
-    <div class="subtitle">Evaluación de Severidad de Catatonia</div>
-    <div class="instruction"><strong>Cribado (Screening):</strong> Si ≥2 ítems de la primera sección son positivos (puntuación > 0), se debe completar la escala completa.</div>
+<div class="search-container">
+    <input type="text" id="scaleSearch" placeholder="🔍 Buscar escala..." onkeyup="searchScales()">
+</div>
 
+<div id="bush" class="container active">
+    <h1>Bush-Francis Catatonia Rating Scale</h1>
+    <div class="subtitle">Evaluación de Severidad de Catatonia</div>
+    <div class="instruction"><strong>¿Cuándo usar la escala?:</strong> Pacientes con o sin antecedentes psiquiátricos con síntomas característicos de catatonia. Esta escala puede ayudar a identificar este síndrome en la práctica diaria, así como a evaluar la gravedad de la catatonia y monitorizar la respuesta al tratamiento.</div>
     <form id="bf-form">
-        <div class="section-title">I. Preguntas de Screening (1-14)</div>
+        <div class="section-title"><strong>I. Preguntas de detección (1-14):</strong> Si ≥2 son positivas, se debe completar la escala completa</div>
         <div class="item">
-            <span class="item-label">1. Excitación</span><span class="item-desc">Hiperactividad extrema, inquietud motora constante que parece no tener propósito; no atribuida a acatisia ni a agitación dirigida a un objetivo.</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Movimiento excesivo; intermitente (+1)</option><option value="2">Movimiento constante; hiperkinético sin periodos de descanso (+2)</option><option value="3">Excitación catatónica total; actividad motora frenética sin fin (+3)</option></select>
+            <span class="item-label">1. Excitación</span>
+<span class="item-desc">Hiperactividad extrema, inquietud motora constante sin propósito aparente. No es atribuible a acatisia o agitación dirigida a metas.</span>
+            <select class="screen-calc" onchange="updateBush()">
+<option value="0">(0): Ausente</option>
+<option value="1">(+1): Movimiento excesivo</option>
+<option value="2">(+2): Movimiento constante, hipercinesia sin períodos de descanso</option>
+<option value="3">(+3): Excitación catatónica franca, actividad motora frenética interminable</option></select>
         </div>
-        <div class="item">
-            <span class="item-label">2. Inmovilidad / Estupor</span><span class="item-desc">Hipoactividad extrema, inmóvil, con mínima respuesta a estímulos.</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Anormalmente quieto; interacción breve (+1)</option><option value="2">Virtualmente sin interacción con el exterior (+2)</option><option value="3">Estuporoso; no reactivo a estímulos dolorosos (+3)</option></select>
-        </div>
-        <div class="item">
-            <span class="item-label">3. Mutismo</span><span class="item-desc">Sin respuesta verbal o mínima respuesta.</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Sin respuesta a la mayoría; susurro incomprensible (+1)</option><option value="2">Habla < 20 palabras en 5 min (+2)</option><option value="3">Sin habla (+3)</option></select>
-        </div>
-        <div class="item">
-            <span class="item-label">4. Mirada fija (Staring)</span><span class="item-desc">Mirada fija; poco o ningún escaneo; parpadeo disminuido.</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Contacto visual pobre; mira fijo < 20 seg entre cambios (+1)</option><option value="2">Gaze sostenido > 20 seg (+2)</option><option value="3">Mirada fija fija; no reactiva (+3)</option></select>
-        </div>
-        <div class="item">
-            <span class="item-label">5. Postura sostenida / catalepsia</span><span class="item-desc">Mantenimiento espontáneo de posturas.</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">< 1 minuto (+1)</option><option value="2">> 1 min a < 15 min (+2)</option><option value="3">Postura bizarra o mundana > 15 min (+3)</option></select>
-        </div>
-        <div class="item">
-            <span class="item-label">6. Muecas</span><span class="item-desc">Mantenimiento de expresiones faciales extrañas.</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">< 10 seg (+1)</option><option value="2">< 1 min (+2)</option><option value="3">Bizarra o mantenida > 1 min (+3)</option></select>
-        </div>
-        <div class="item">
-            <span class="item-label">7. Ecofenómenos (Ecolalia/Ecopraxia)</span><span class="item-desc">Imitar movimientos o palabras del examinador.</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Ocasional (+1)</option><option value="2">Frecuente (+2)</option><option value="3">Constante (+3)</option></select>
-        </div>
-        <div class="item">
-            <span class="item-label">8. Estereotipia</span><span class="item-desc">Movimiento repetitivo sin propósito (ej. frotarse las manos).</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Ocasional (+1)</option><option value="2">Frecuente (+2)</option><option value="3">Constante (+3)</option></select>
-        </div>
-        <div class="item">
-            <span class="item-label">9. Manierismos</span><span class="item-desc">Movimientos extraños con propósito (ej. caminar de puntitas).</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Ocasional (+1)</option><option value="2">Frecuente (+2)</option><option value="3">Constante (+3)</option></select>
-        </div>
-        <div class="item">
-            <span class="item-label">10. Verbigeración</span><span class="item-desc">Repetición de frases o sentencias.</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Ocasional (+1)</option><option value="2">Frecuente; difícil de interrumpir (+2)</option><option value="3">Constante (+3)</option></select>
-        </div>
-        <div class="item">
-            <span class="item-label">11. Rigidez</span><span class="item-desc">Resistencia al movimiento pasivo (excluir rueda dentada).</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Leve (+1)</option><option value="2">Moderada (+2)</option><option value="3">Severa; no se puede mover la extremidad (+3)</option></select>
-        </div>
-        <div class="item">
-            <span class="item-label">12. Negativismo</span><span class="item-desc">Resistencia sin motivo o hacer lo opuesto a la instrucción.</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Resistencia leve/ocasional (+1)</option><option value="2">Moderada/frecuente (+2)</option><option value="3">Severa/continua (+3)</option></select>
-        </div>
-        <div class="item">
-            <span class="item-label">13. Flexibilidad Cérea</span><span class="item-desc">Resistencia inicial que cede (como doblar una vela).</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="3">Presente (+3)</option></select>
-        </div>
-        <div class="item">
-            <span class="item-label">14. Retraimiento</span><span class="item-desc">Rechazo a comer, beber o contacto visual.</span>
-            <select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Mínima ingesta/interacción < 1 día (+1)</option><option value="2">Mínima ingesta/interacción > 1 día (+2)</option><option value="3">Sin ingesta/interacción ≥ 1 día (+3)</option></select>
-        </div>
+        <div class="item"><span class="item-label">2. Inmovilidad / Estupor</span>
+<span class="item-desc">Hipoactividad extrema, inmóvil, con mínima respuesta a estímulos.</span>
+<select class="screen-calc" onchange="updateBush()">
+<option value="0">(0): Ausente</option>
+<option value="1">(+1): Se sienta anormalmente quieto, puede interactuar brevemente</option>
+<option value="2">(+2): Prácticamente sin interacción con el mundo exterior/option>
+<option value="3">(+3): Estuporoso, no responde a estímulo doloroso</option></select>
+</div>
+        <div class="item"><span class="item-label">3. Mutismo</span>
+<span class="item-desc">Sin habla o mínima respuesta verbal.</span>
+<select class="screen-calc" onchange="updateBush()">
+<option value="0">(0): Ausente</option>
+<option value="1">(+1): Sin respuesta verbal a la mayoría de las preguntas; susurro incomprensible</option>
+<option value="2">(+2):  Habla menos de 20 palabras en 5 minutos</option>
+<option value="3">(+3): No habla</option></select>
+</div>
+        <div class="item"><span class="item-label">4. Mirada fija <i>(Staring)</i></span>
+<span class="item-desc">Mirada fija; poco o ningún escaneo; parpadeo disminuido.</span>
+<select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Pobre contacto (+1)</option><option value="2">Sostenida (+2)</option><option value="3">Fija/no reactiva (+3)</option></select></div>
+        <div class="item"><span class="item-label">5. Postura sostenida / Catalepsia</span>
+<span class="item-desc">Mantención espontánea de posturas, incluyendo las triviales (como estar sentado o parado) por largos períodos de tiempo y sin reactividad.</span>
+<select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">< 1 min (+1)</option><option value="2">1-15 min (+2)</option><option value="3">> 15 min (+3)</option></select></div>
+        <div class="item"><span class="item-label">6. Muecas faciales <i>(Grimacing)</i></span>
+<span class="item-desc">Realiza y mantiene expresiones faciales en forma inhabitual.</span>
+<select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Leve (+1)</option><option value="2">Moderado (+2)</option><option value="3">Bizarro (>1 min) (+3)</option></select></div>
+        <div class="item"><span class="item-label">7. Ecofenómenos (Ecopraxia / Ecolalia)</span>
+<span class="item-desc">Imitar los movimientos o las palabras del examinador.</span>
+<select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Ocasional (+1)</option><option value="2">Frecuente (+2)</option><option value="3">Constante (+3)</option></select></div>
+        <div class="item"><span class="item-label">8. Estereotipias</span>
+<span class="item-desc">Actividad motora repetitiva sin propósito u objetivo (ej: Jugar con los dedos, toqueteo repetitivo, darse palmadas o frotarse a sí mismo) que resulta anormal no necesariamente por el acto en sí mismo, sino por su frecuencia.</span>
+<select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Ocasional (+1)</option><option value="2">Frecuente (+2)</option><option value="3">Constante (+3)</option></select></div>
+        <div class="item"><span class="item-label">9. Manierismos</span>
+<span class="item-desc">Movimientos con propósito aparente, que resultan extraños o exagerados en sí mismo para lo que se está llevando a cabo (ej: desplazarse saltando o caminar de puntillas, saludar de forma caricaturesca o exagerando movimientos normales o que trivialmente se usan para saludar).</span>
+<select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Ocasional (+1)</option><option value="2">Frecuente (+2)</option><option value="3">Constante (+3)</option></select></div>
+        <div class="item"><span class="item-label">10. Verbigeración</span>
+<span class="item-desc">Repetición de frases u oraciones (como un “disco rallado”).</span>
+<select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Ocasional (+1)</option><option value="2">Frecuente (+2)</option><option value="3">Constante (+3)</option></select></div>
+        <div class="item"><span class="item-label">11. Rigidez</span>
+<span class="item-desc">Sostener una postura rígida, a pesar de los esfuerzos que se hacen para moverlo/a. Excluir si hay rueda dentada o temblor presente.</span>
+<select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Leve (+1)</option><option value="2">Moderada (+2)</option><option value="3">Severa (+3)</option></select></div>
+        <div class="item"><span class="item-label">12. Negativismo</span>
+<span class="item-desc">Resistencia aparentemente inmotivada a las instrucciones o intentos de mover/examinar al paciente. Conducta contradictoria, hace exactamente lo contrario de lo que se le pide o instruye.</span>
+<select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Leve (+1)</option><option value="2">Moderado (+2)</option><option value="3">Severo (+3)</option></select></div>
+        <div class="item"><span class="item-label">13. Flexibilidad Cérea</span>
+<span class="item-desc">Cuando se intenta cambiar de postura al paciente, éste ofrece una resistencia inicial antes de permitir ser reposicionado, similar a cuando se intenta doblar una vela de cera.</span>
+<select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="3">Presente (+3)</option></select></div>
+        <div class="item"><span class="item-label">14. Retraimiento / Rechazo <i>(Withdrawal)</i></span>
+<span class="item-desc">Se rehúsa a comer, beber y/o hacer contacto ocular.</span>
+<select class="screen-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">< 1 día (+1)</option><option value="2">> 1 día (+2)</option><option value="3">Sin ingesta (+3)</option></select></div>
 
         <div id="additional-sec" class="additional-questions">
             <div class="section-title">II. Preguntas Adicionales (15-23)</div>
-            <div class="item"><span class="item-label">15. Impulsividad</span><span class="item-desc">Sin explicación, conducta impulsiva.</span><select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Ocasional (+1)</option><option value="2">Frecuente (+2)</option><option value="3">Constante o no redirigible (+3)</option></select></div>
-            <div class="item"><span class="item-label">16. Obediencia Automática</span><span class="item-desc">Cooperación exagerada con las solicitudes.</span><select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Ocasional (+1)</option><option value="2">Frecuente (+2)</option><option value="3">Constante (+3)</option></select></div>
-            <div class="item"><span class="item-label">17. Mitgehen</span><span class="item-desc">Levanta el brazo ante presión ligera pese a instrucción contraria.</span><select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="3">Presente (+3)</option></select></div>
-            <div class="item"><span class="item-label">18. Gegenhalten</span><span class="item-desc">Resistencia al movimiento proporcional a la fuerza aplicada (automática).</span><select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="3">Presente (+3)</option></select></div>
-            <div class="item"><span class="item-label">19. Ambitendencia</span><span class="item-desc">Aparece motoramente "atrapado" en indecisión.</span><select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="3">Presente (+3)</option></select></div>
-            <div class="item"><span class="item-label">20. Reflejo de Prensión (Grasp)</span><span class="item-desc">Según examen neurológico.</span><select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="3">Presente (+3)</option></select></div>
-            <div class="item"><span class="item-label">21. Perseveración</span><span class="item-desc">Retorno repetido al mismo tema o movimiento.</span><select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="3">Presente (+3)</option></select></div>
-            <div class="item"><span class="item-label">22. Combatividad</span><span class="item-desc">Usualmente de manera no dirigida.</span><select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Golpea ocasionalmente (+1)</option><option value="2">Golpea frecuentemente (+2)</option><option value="3">Peligro serio para otros (+3)</option></select></div>
-            <div class="item"><span class="item-label">23. Alteración Autonómica</span><span class="item-desc">Temperatura, PA, pulso, FR, diaforesis.</span><select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">1 parámetro alterado (+1)</option><option value="2">2 parámetros alterados (+2)</option><option value="3">3 o más parámetros alterados (+3)</option></select></div>
+            <div class="item"><span class="item-label">15. Impulsividad</span>
+<span class="item-desc">Repentinamente el paciente se involucra en conductas inapropiadas (ej. correr por los pasillos, empezar a gritar o sacarse la ropa) sin provocación. Posteriormente no puede dar una explicación o sólo ofrece una explicación simplista.</span>
+<select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Ocasional (+1)</option><option value="2">Frecuente (+2)</option><option value="3">Constante (+3)</option></select></div>
+            <div class="item"><span class="item-label">16. Obediencia Automática</span>
+<span class="item-desc">Cooperación exagerada con los requerimientos del examinador o la continuación espontánea de un movimiento requerido.</span>
+<select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Leve (+1)</option><option value="2">Frecuente (+2)</option><option value="3">Constante (+3)</option></select></div>
+            <div class="item"><span class="item-label">17. Mitgehen <i>(acompañar, seguir, consentir, <u>ir con</u>)</i></span>
+<span class="item-desc">Levanta el brazo en respuesta a una ligera presión de un dedo <i>(<u>lámpara de anglepoise</u>)</i>, a pesar de la instrucción contraria de no hacerlo.</span>
+<select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="3">Presente (+3)</option></select></div>
+            <div class="item"><span class="item-label">18. Gegenhalten <i>(mantener; <u>contrario a</u>)</i></span>
+<span class="item-desc">Resistencia al movimiento pasivo que resulta proporcional a la fuerza del estímulo, aparece en forma automática más que voluntario.</span>
+<select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="3">Presente (+3)</option></select></div>
+            <div class="item"><span class="item-label">19. Ambitendencia</span>
+<span class="item-desc">El paciente impresiona “entrampado o atascado” en la indecisión motriz, con movimientos titubeantes. Refleja la acción conjunta de dos movimientos contrapuestos o contradictorios.</span>
+<select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="3">Presente (+3)</option></select></div>
+            <div class="item"><span class="item-label">20. Reflejo de prensión</span>
+<span class="item-desc">En el momento en el que se ejerce una presión en la palma de la mano, ésta se cierra con fuerza de manera inmediata. Se busca al examen neurológico.</span>
+<select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="3">Presente (+3)</option></select></div>
+            <div class="item"><span class="item-label">21. Perseveración</span>
+<span class="item-desc">Regresa reiteradamente al mismo tema o movimiento persistente.</span>
+<select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="3">Presente (+3)</option></select></div>
+            <div class="item"><span class="item-label">22. Combatividad</span>
+<span class="item-desc">Ataca usualmente de una manera desorganizada o no dirigida, con ninguna o sólo una explicación simplista para explicar su conducta en forma posterior.</span>
+<select class="add-calc" onchange="updateBush()"><option value="0">Ausente (0)</option><option value="1">Ocasional (+1)</option><option value="2">Frecuente (+2)</option><option value="3">Severa (+3)</option></select></div>
+            <div class="item"><span class="item-label">23. Alteración autonómica <i>(Alteración vegetativa</i></span>
+<span class="item-desc">Temperatura, presión arterial, pulso, frecuencia respiratoria, diaforesis.</span>
+<select class="add-calc" onchange="updateBush()">
+<option value="0">Ausente (0)</option>
+<option value="1"> Anomalía en 1 parámetro (excluye hipertensión arterial previa) (+1)</option>
+<option value="2">Anomalía en 2 parámetros (+2)</option>
+<option value="3"> Anomalía en 3 o más parámetros (+3)</option></select></div>
         </div>
     </form>
     <div class="result-panel">
         <div>Puntuación BFCRS Total</div>
         <div class="total-score" id="bush-score">0</div>
-        <div id="bush-status" class="interpretation">Cribado Negativo (<2 síntomas)</div>
+        <div id="bush-status" class="interpretation">Screening Negativo (<2 síntomas)</div>
     </div>
+</div>
+
+<div id="ciwa" class="container">
+    <h1>Escala CIWA-Ar</h1>
+    <div class="subtitle">Abstinencia de Alcohol</div>
+    <div class="item"><span class="label">Náuseas y vómitos</span><span class="desc">Pregunte: "¿Se siente mal del estómago? ¿Ha vomitado?"</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - Sin náuseas ni vómitos</option><option value="1">1 - Náuseas leves, sin vómitos</option><option value="2">2 - (Síntomas más severos)</option><option value="3">3 - (Síntomas más severos)</option><option value="4">4 - Náuseas intermitentes con arcadas (ganas de vomitar)</option><option value="5">5 - (Síntomas más severos)</option><option value="6">6 - (Síntomas más severos)</option><option value="7">7 - Náuseas constantes, arcadas frecuentes y vómitos</option></select></div>
+    <div class="item"><span class="label">Temblores</span><span class="desc">Con los brazos extendidos y los dedos separados. Observación</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - Sin temblor</option><option value="1">1 - No visibles, pero se pueden sentir de punta a punta</option><option value="2">2 - (Síntomas más severos)</option><option value="3">3 - (Síntomas más severos)</option><option value="4">4 - Moderado con los brazos extendidos</option><option value="5">5 - (Síntomas más severos)</option><option value="6">6 - (Síntomas más severos)</option><option value="7">7 - Severo, incluso sin extender los brazos</option></select></div>
+    <div class="item"><span class="label">Sudoración paroxística</span><span class="desc">Observación directa.</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - No hay sudor visible</option><option value="1">1 - Humedad apenas perceptible, palmas húmedas</option><option value="2">2 - (Síntomas más severos)</option><option value="3">3 - (Síntomas más severos)</option><option value="4">4 - Perlas de sudor evidentes en la frente</option><option value="5">5 - (Síntomas más severos)</option><option value="6">6 - (Síntomas más severos)</option><option value="7">7 - Sudoración empapante</option></select></div>
+    <div class="item"><span class="label">Ansiedad</span><span class="desc">Pregunte: "¿Se siente nervioso?"</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - Sin ansiedad, relajado</option><option value="1">1 - Ligeramente ansioso</option><option value="2">2 - (Síntomas más severos)</option><option value="3">3 - (Síntomas más severos)</option><option value="4">4 - Moderadamente ansioso o custodiado</option><option value="5">5 - (Síntomas más severos)</option><option value="6">6 - (Síntomas más severos)</option><option value="7">7 - Equivalente a un estado de pánico agudo</option></select></div>
+    <div class="item"><span class="label">Agitación psicomotora</span><span class="desc">Observación directa.</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - Actividad normal</option><option value="1">1 - Actividad algo mayor que lo normal</option><option value="2">2 - (Síntomas más severos)</option><option value="3">3 - (Síntomas más severos)</option><option value="4">4 - Moderadamente inquieto y se mueve</option><option value="5">5 - (Síntomas más severos)</option><option value="6">6 - (Síntomas más severos)</option><option value="7">7 - Camina de un lado a otro o se mueve constantemente</option></select></div>
+    <div class="item"><span class="label">Alteraciones táctiles</span><span class="desc">¿Tiene sensaciones de picazón, hormigueo, quemazón o entumecimiento?</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - Ninguna</option><option value="1">1 - Picazón, hormigueo, quemazón o entumecimiento muy leve</option><option value="2">2 - Picazón, hormigueo, quemazón o entumecimiento leve</option><option value="3">3 - Picazón, hormigueo, quemazón o entumecimiento moderado</option><option value="4">4 - Alucinaciones táctiles moderadas</option><option value="5">5 - Alucinaciones táctiles severas</option><option value="6">6 - Alucinaciones táctiles extremadamente severas</option><option value="7">7 - Alucinaciones continuas</option></select></div>
+    <div class="item"><span class="label">Alteraciones auditivas</span><span class="desc">¿Está más consciente de los sonidos? ¿Son agresivos? ¿Escucha cosas que no están?</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - No presente</option><option value="1">1 - Sensibilidad muy leve</option><option value="2">2 - Sensibilidad leve</option><option value="3">3 - Sensibilidad moderada</option><option value="4">4 - Alucinaciones auditivas moderadas</option><option value="5">5 - Alucinaciones auditivas severas</option><option value="6">6 - Alucinaciones auditivas extremadamente severas</option><option value="7">7 - Alucinaciones continuas</option></select></div>
+    <div class="item"><span class="label">Alteraciones visuales</span><span class="desc"> Pregunte: "¿Le parece que la luz es demasiado brillante? ¿Es distinto el color? ¿Le molesta a los ojos? ¿Ve algo que le perturba? ¿Ve cosas que sabe que no están ahí?"</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - No presente</option><option value="1">1 - Sensibilidad muy leve</option><option value="2">2 - Sensibilidad leve</option><option value="3">3 - Sensibilidad moderada</option><option value="4">4 - Alucinaciones visuales moderadas</option><option value="5">5 - Alucinaciones visuales severas</option><option value="6">6 - Alucinaciones visuales extremadamente severas</option><option value="7">7 - Alucinaciones continuas</option></select></div>
+    <div class="item"><span class="label">Cefalea / Opresión en la cabeza</span><span class="desc">Pregunte: "¿Nota distinta la cabeza? ¿Siente como si tuviera una cinta alrededor de la cabeza?" No considere los desmayos o mareos. De lo contrario, califique la intensidad.</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - No presente</option><option value="1">1 - Muy leve</option><option value="2">2 - Leve</option><option value="3">3 - Moderada</option><option value="4">4 - Moderadamente severa</option><option value="5">5 - Severa</option><option value="6">6 - Muy severa</option><option value="7">7 - Extremadamente severa</option></select></div>
+    <div class="item"><span class="label">Orientación / Obnubilación</span><span class="desc">Pregunte: ¿Qué día es hoy? ¿Dónde está? ¿Quién soy yo?</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - Orientado y puede hacer sumas seriales</option><option value="1">1 - No está seguro de la fecha o desorientado en la fecha por no más de 2 días calendario</option><option value="2">2 - Desorientado en la fecha por más de 2 días calendario</option><option value="3">3 - Desorientado en el lugar y/o la persona</option><option value="4">4 - Desorientado completamente</option></select></div>
+    <div class="result-panel" id="ciwa-panel"><div>Puntaje CIWA-Ar Total</div><div class="total-score" id="ciwa-score">0</div><div id="ciwa-status" class="interpretation">Abstinencia Leve</div></div>
+</div>
+
+<div id="cows" class="container">
+    <h1>Escala COWS para la abstinencia de opiáceos</h1>
+    <div class="subtitle">COWS (Clinical Opiate Withdrawal Scale): Cuantifica la severidad de la abstinencia de opiáceos</div>
+    <div class="info-section"><strong>Cuándo usar:</strong> Para cuantificar la gravedad de la abstinencia de opiáceos.<br><strong>Perlas clínicas:</strong> Evalúe los síntomas en el contexto del tiempo transcurrido desde la última dosis.</div>
+
+    <div class="question"><label><strong>1. Frecuencia del pulso en reposo (LPM)</strong></label><small>Medir la frecuencia de pulso después de que el paciente haya estado sentado o acostado durante 1 minuto.</small><select class="cows-calc" onchange="calcCows()"><option value="0"> (0): ≤ 80</option><option value="1">(+1): 81-100</option><option value="2">(+2): 101-120</option><option value="4">(+4): >120</option></select></div>
+    <div class="question"><label><strong>2. Sudoración</strong></label><small>Sudoración no explicada por la temperatura de la habitación ni por la actividad del paciente durante los últimos 30 minutos.</small><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Sin reporte de escalofríos ni flushing (sofocos/rubor/enrojecimiento)</option><option value="1">(+1): Reporte subjetivo de escalofríos o flushing (sofocos/rubor/enrojecimiento)</option><option value="2">(+2): Flushed (rubor/enragedecido) o humedad observable en el rostro</option><option value="3">(+3): Gotas de sudor en la frente o el rostro</option><option value="4">(+4): Sudor que corre por el rostro</option></select></div>
+    <div class="question"><label><strong>3. Observación de inquietud durante la evaluación</strong><small></small></label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Capaz de permanecer sentado tranquilo</option><option value="1">(+1): Reporta dificultad para quedarse quieto, pero puede</option><option value="3">(+3): Cambios de posición frecuentes / movimientos extraños</option><option value="5">(+5): Incapaz de quedarse quieto más de unos segundos</option></select></div>
+    <div class="question"><label><strong>4. Tamaño de la pupila</strong><small></small></label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Normales o puntiformes</option><option value="1">(+1): Posiblemente más grandes de lo normal</option><option value="2">(+2): Moderadamente dilatadas</option><option value="5">(+5): Dilatadas (solo borde del iris visible)</option></select></div>
+    <div class="question"><label><strong>5. Dolores óseos o articulares</strong></label><small>Si el paciente tenía dolor previamente, solo se puntúa el componente adicional atribuido a la abstinencia de opiáceos.</small><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Ausente</option><option value="1">(+1): Malestar difuso leve</option><option value="2">(+2): Dolor difuso severo reportado</option><option value="4">(+4): Se frota articulaciones y no puede estar quieto</option></select></div>
+    <div class="question"><label><strong>6. Rinorrea o lagrimeo</strong><small>No se debe a síntomas de resfriado o alergias.</small></label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Ausente</option><option value="1">(+1): Congestión u ojos húmedos</option><option value="2">(+2): Goteo nasal o lagrimeo</option><option value="4">(+4): Goteo constante o lágrimas por mejillas</option></select></div>
+    <div class="question"><label><strong>7. Malestar Gastrointestinal (Últimos 30 min)</strong><small></small></label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Sin síntomas</option><option value="1">(+1): Calambres abdominales</option><option value="2">(+2): Náuseas o heces blandas</option><option value="3">(+3): Vómitos o diarrea</option><option value="5">(+5): Múltiples episodios de vómitos o diarrea</option></select></div>
+    <div class="question"><label><strong>8. Temblor en manos extendidas</strong><small></small></label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Sin temblor</option><option value="1">(+1): Palpable pero no observable</option><option value="2">(+2): Temblor leve observable</option><option value="4">(+4): Temblor grosero o espasmos</option></select></div>
+    <div class="question"><label><strong>9. Bostezos durante la evaluación</strong></label><small></small><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Sin bostezos</option><option value="1">(+1): 1 o 2 veces</option><option value="2">(+2): 3 o más veces</option><option value="4">(+4): Varias veces por minuto</option></select></div>
+    <div class="question"><label><strong>10. Ansiedad o irritabilidad</strong></label><small></small><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Ninguna</option><option value="1">(+1): Reporte de aumento de irritabilidad/ansiedad</option><option value="2">(+2): Obviamente irritable o ansioso</option><option value="4">(+4): Dificulta la participación en la evaluación</option></select></div>
+    <div class="question"><label><strong>11. Gooseflesh skin (piel de gallina/piloerección)</strong></label><small></small><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Piel lisa</option><option value="3">(+3): Perceptible al tacto o vellos erizados</option><option value="5">(+5): Piloerección prominente</option></select></div>
+    <div class="result-panel"><div>Puntaje Total COWS</div><div class="total-score" id="cows-score">0</div><div id="cows-status" class="interpretation">Abstinencia Mínima</div></div>
 </div>
 
 <div id="paws" class="container">
@@ -330,116 +371,289 @@
     <div class="instructions"><strong>Instrucciones:</strong> Uso en pacientes ≥18 años ingresados en planta general. No usar en pacientes con trastornos convulsivos activos o no controlados.</div>
     <div class="section-title">Criterio de Umbral</div>
     <div class="question">
-        <label>¿Consumió el paciente alguna cantidad de alcohol en los últimos 30 días O tuvo un nivel positivo de alcohol en sangre al ingreso?</label>
+        <label>¿Consumió el paciente alguna cantidad de alcohol en los últimos 30 días o tuvo un nivel positivo de alcohol en sangre al ingreso?</label><small></small>
         <div class="options">
             <input type="radio" name="threshold" id="t_no" value="no" onchange="checkPawsThreshold()"><label for="t_no">No</label>
             <input type="radio" name="threshold" id="t_yes" value="yes" onchange="checkPawsThreshold()"><label for="t_yes">Sí</label>
         </div>
     </div>
     <div id="paws-warning" class="warning">Si la respuesta es "No", el riesgo de abstinencia severa es bajo. PAWS no es aplicable.</div>
-    
+
     <div id="paws-questions" style="display: none;">
         <div class="section-title">Preguntas al paciente</div>
-        <div class="question"><label>1. ¿Ha estado recientemente intoxicado o ebrio en los últimos 30 días?</label><div class="options"><input type="radio" name="p1" value="0" id="p1_0" onchange="calcPaws()"><label for="p1_0">No (0)</label><input type="radio" name="p1" value="1" id="p1_1" onchange="calcPaws()"><label for="p1_1">Sí (+1)</label></div></div>
-        <div class="question"><label>2. ¿Ha experimentado alguna vez episodios previos de abstinencia de alcohol?</label><div class="options"><input type="radio" name="p2" value="0" id="p2_0" onchange="calcPaws()"><label for="p2_0">No (0)</label><input type="radio" name="p2" value="1" id="p2_1" onchange="calcPaws()"><label for="p2_1">Sí (+1)</label></div></div>
-        <div class="question"><label>3. ¿Ha tenido alguna vez convulsiones por abstinencia?</label><div class="options"><input type="radio" name="p3" value="0" id="p3_0" onchange="calcPaws()"><label for="p3_0">No (0)</label><input type="radio" name="p3" value="1" id="p3_1" onchange="calcPaws()"><label for="p3_1">Sí (+1)</label></div></div>
-        <div class="question"><label>4. ¿Ha experimentado alguna vez Delirium Tremens (DTs)?</label><div class="options"><input type="radio" name="p4" value="0" id="p4_0" onchange="calcPaws()"><label for="p4_0">No (0)</label><input type="radio" name="p4" value="1" id="p4_1" onchange="calcPaws()"><label for="p4_1">Sí (+1)</label></div></div>
-        <div class="question"><label>5. ¿Ha realizado alguna vez tratamiento de rehabilitación de alcohol (ej. programas ambulatorios, internación o AA)?</label><div class="options"><input type="radio" name="p5" value="0" id="p5_0" onchange="calcPaws()"><label for="p5_0">No (0)</label><input type="radio" name="p5" value="1" id="p5_1" onchange="calcPaws()"><label for="p5_1">Sí (+1)</label></div></div>
-        <div class="question"><label>6. ¿Ha experimentado alguna vez lagunas mentales (blackouts)?</label><div class="options"><input type="radio" name="p6" value="0" id="p6_0" onchange="calcPaws()"><label for="p6_0">No (0)</label><input type="radio" name="p6" value="1" id="p6_1" onchange="calcPaws()"><label for="p6_1">Sí (+1)</label></div></div>
-        <div class="question"><label>7. ¿Ha combinado alcohol con otros "depresores" (ej. benzodiacepinas, barbitúricos) en los últimos 90 días?</label><div class="options"><input type="radio" name="p7" value="0" id="p7_0" onchange="calcPaws()"><label for="p7_0">No (0)</label><input type="radio" name="p7" value="1" id="p7_1" onchange="calcPaws()"><label for="p7_1">Sí (+1)</label></div></div>
-        <div class="question"><label>8. ¿Ha combinado alcohol con cualquier otra sustancia de abuso durante los últimos 90 días?</label><div class="options"><input type="radio" name="p8" value="0" id="p8_0" onchange="calcPaws()"><label for="p8_0">No (0)</label><input type="radio" name="p8" value="1" id="p8_1" onchange="calcPaws()"><label for="p8_1">Sí (+1)</label></div></div>
+        <div class="question"><label>1. ¿Ha estado recientemente intoxicado o ebrio en los últimos 30 días?</label><small></small>
+<div class="options"><input type="radio" name="p1" value="0" id="p1_0" onchange="calcPaws()"><label for="p1_0">No (0)</label><input type="radio" name="p1" value="1" id="p1_1" onchange="calcPaws()"><label for="p1_1">Sí (+1)</label></div></div>
+        <div class="question"><label>2. ¿Ha experimentado alguna vez episodios previos de abstinencia de alcohol?</label><small></small><div class="options"><input type="radio" name="p2" value="0" id="p2_0" onchange="calcPaws()"><label for="p2_0">No (0)</label><input type="radio" name="p2" value="1" id="p2_1" onchange="calcPaws()"><label for="p2_1">Sí (+1)</label></div></div>
+        <div class="question"><label>3. ¿Ha tenido alguna vez convulsiones por abstinencia?</label><small></small><div class="options"><input type="radio" name="p3" value="0" id="p3_0" onchange="calcPaws()"><label for="p3_0">No (0)</label><input type="radio" name="p3" value="1" id="p3_1" onchange="calcPaws()"><label for="p3_1">Sí (+1)</label></div></div>
+        <div class="question"><label>4. ¿Ha experimentado alguna vez Delirium Tremens (DTs)?</label><small></small><div class="options"><input type="radio" name="p4" value="0" id="p4_0" onchange="calcPaws()"><label for="p4_0">No (0)</label><input type="radio" name="p4" value="1" id="p4_1" onchange="calcPaws()"><label for="p4_1">Sí (+1)</label></div></div>
+        <div class="question"><label>5. ¿Ha realizado alguna vez tratamiento de rehabilitación de alcohol (ej. programas ambulatorios, internación o AA)?</label><small></small><div class="options"><input type="radio" name="p5" value="0" id="p5_0" onchange="calcPaws()"><label for="p5_0">No (0)</label><input type="radio" name="p5" value="1" id="p5_1" onchange="calcPaws()"><label for="p5_1">Sí (+1)</label></div></div>
+        <div class="question"><label>6. ¿Ha experimentado alguna vez lagunas mentales (blackouts)?</label><small></small><div class="options"><input type="radio" name="p6" value="0" id="p6_0" onchange="calcPaws()"><label for="p6_0">No (0)</label><input type="radio" name="p6" value="1" id="p6_1" onchange="calcPaws()"><label for="p6_1">Sí (+1)</label></div></div>
+        <div class="question"><label>7. ¿Ha combinado alcohol con otros "depresores" (ej. benzodiacepinas, barbitúricos) en los últimos 90 días?</label><small></small><div class="options"><input type="radio" name="p7" value="0" id="p7_0" onchange="calcPaws()"><label for="p7_0">No (0)</label><input type="radio" name="p7" value="1" id="p7_1" onchange="calcPaws()"><label for="p7_1">Sí (+1)</label></div></div>
+        <div class="question"><label>8. ¿Ha combinado alcohol con cualquier otra sustancia de abuso durante los últimos 90 días?</label><small></small><div class="options"><input type="radio" name="p8" value="0" id="p8_0" onchange="calcPaws()"><label for="p8_0">No (0)</label><input type="radio" name="p8" value="1" id="p8_1" onchange="calcPaws()"><label for="p8_1">Sí (+1)</label></div></div>
         <div class="section-title">Evidencia Clínica</div>
-        <div class="question"><label>9. Alcohol en sangre (alcoholemia) positivo al ingreso</label><div class="options"><input type="radio" name="p9" value="0" id="p9_0" onchange="calcPaws()"><label for="p9_0">No (0)</label><input type="radio" name="p9" value="1" id="p9_1" onchange="calcPaws()"><label for="p9_1">Sí (+1)</label></div></div>
-        <div class="question"><label>10. Evidencia de actividad autonómica aumentada (ej. FC >120, temblor, sudoración, agitación, náuseas)</label><div class="options"><input type="radio" name="p10" value="0" id="p10_0" onchange="calcPaws()"><label for="p10_0">No (0)</label><input type="radio" name="p10" value="1" id="p10_1" onchange="calcPaws()"><label for="p10_1">Sí (+1)</label></div></div>
+        <div class="question"><label>9. Alcohol en sangre (alcoholemia) positivo al ingreso</label><small></small><div class="options"><input type="radio" name="p9" value="0" id="p9_0" onchange="calcPaws()"><label for="p9_0">No (0)</label><input type="radio" name="p9" value="1" id="p9_1" onchange="calcPaws()"><label for="p9_1">Sí (+1)</label></div></div>
+        <div class="question"><label>10. Evidencia de actividad autonómica aumentada (ej. FC >120, temblor, sudoración, agitación, náuseas)</label><small></small><div class="options"><input type="radio" name="p10" value="0" id="p10_0" onchange="calcPaws()"><label for="p10_0">No (0)</label><input type="radio" name="p10" value="1" id="p10_1" onchange="calcPaws()"><label for="p10_1">Sí (+1)</label></div></div>
         <div class="result-panel">PUNTUACIÓN TOTAL<div class="total-score" id="paws-score">0</div><div id="paws-status" class="interpretation">-</div></div>
     </div>
 </div>
 
-<div id="ciwa" class="container">
-    <h1>Escala CIWA-Ar</h1>
-    <div class="subtitle">Abstinencia de Alcohol</div>
-    <div class="item"><span class="label">Náuseas y vómitos</span><span class="desc">Pregunte: "¿Se siente mal del estómago? ¿Ha vomitado?"</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - Sin náuseas ni vómitos</option><option value="1">1 - Náuseas leves, sin vómitos</option><option value="2">2 - (Síntomas más severos)</option><option value="3">3 - (Síntomas más severos)</option><option value="4">4 - Náuseas intermitentes con arcadas (ganas de vomitar)</option><option value="5">5 - (Síntomas más severos)</option><option value="6">6 - (Síntomas más severos)</option><option value="7">7 - Náuseas constantes, arcadas frecuentes y vómitos</option></select></div>
-    <div class="item"><span class="label">Temblores</span><span class="desc">Con los brazos extendidos y los dedos separados.</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - Sin temblor</option><option value="1">1 - No visibles, pero se pueden sentir de punta a punta</option><option value="2">2 - (Síntomas más severos)</option><option value="3">3 - (Síntomas más severos)</option><option value="4">4 - Moderado con los brazos extendidos</option><option value="5">5 - (Síntomas más severos)</option><option value="6">6 - (Síntomas más severos)</option><option value="7">7 - Severo, incluso sin extender los brazos</option></select></div>
-    <div class="item"><span class="label">Sudoración paroxística</span><span class="desc">Observación directa.</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - No hay sudor visible</option><option value="1">1 - Humedad apenas perceptible, palmas húmedas</option><option value="2">2 - (Síntomas más severos)</option><option value="3">3 - (Síntomas más severos)</option><option value="4">4 - Perlas de sudor evidentes en la frente</option><option value="5">5 - (Síntomas más severos)</option><option value="6">6 - (Síntomas más severos)</option><option value="7">7 - Sudoración empapante</option></select></div>
-    <div class="item"><span class="label">Ansiedad</span><span class="desc">Pregunte: "¿Se siente nervioso?"</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - Sin ansiedad, relajado</option><option value="1">1 - Ligeramente ansioso</option><option value="2">2 - (Síntomas más severos)</option><option value="3">3 - (Síntomas más severos)</option><option value="4">4 - Moderadamente ansioso o custodiado</option><option value="5">5 - (Síntomas más severos)</option><option value="6">6 - (Síntomas más severos)</option><option value="7">7 - Equivalente a un estado de pánico agudo</option></select></div>
-    <div class="item"><span class="label">Agitación psicomotora</span><span class="desc">Observación directa.</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - Actividad normal</option><option value="1">1 - Actividad algo mayor que lo normal</option><option value="2">2 - (Síntomas más severos)</option><option value="3">3 - (Síntomas más severos)</option><option value="4">4 - Moderadamente inquieto y se mueve</option><option value="5">5 - (Síntomas más severos)</option><option value="6">6 - (Síntomas más severos)</option><option value="7">7 - Camina de un lado a otro o se mueve constantemente</option></select></div>
-    <div class="item"><span class="label">Alteraciones táctiles</span><span class="desc">¿Tiene sensaciones de picazón, hormigueo, quemazón o entumecimiento?</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - Ninguna</option><option value="1">1 - Picazón, hormigueo, quemazón o entumecimiento muy leve</option><option value="2">2 - Picazón, hormigueo, quemazón o entumecimiento leve</option><option value="3">3 - Picazón, hormigueo, quemazón o entumecimiento moderado</option><option value="4">4 - Alucinaciones táctiles moderadas</option><option value="5">5 - Alucinaciones táctiles severas</option><option value="6">6 - Alucinaciones táctiles extremadamente severas</option><option value="7">7 - Alucinaciones continuas</option></select></div>
-    <div class="item"><span class="label">Alteraciones auditivas</span><span class="desc">¿Está más consciente de los sonidos? ¿Son agresivos? ¿Escucha cosas que no están?</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - No presente</option><option value="1">1 - Sensibilidad muy leve</option><option value="2">2 - Sensibilidad leve</option><option value="3">3 - Sensibilidad moderada</option><option value="4">4 - Alucinaciones auditivas moderadas</option><option value="5">5 - Alucinaciones auditivas severas</option><option value="6">6 - Alucinaciones auditivas extremadamente severas</option><option value="7">7 - Alucinaciones continuas</option></select></div>
-    <div class="item"><span class="label">Alteraciones visuales</span><span class="desc">¿La luz es demasiado brillante? ¿Ve cosas que no están ahí?</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - No presente</option><option value="1">1 - Sensibilidad muy leve</option><option value="2">2 - Sensibilidad leve</option><option value="3">3 - Sensibilidad moderada</option><option value="4">4 - Alucinaciones visuales moderadas</option><option value="5">5 - Alucinaciones visuales severas</option><option value="6">6 - Alucinaciones visuales extremadamente severas</option><option value="7">7 - Alucinaciones continuas</option></select></div>
-    <div class="item"><span class="label">Cefalea, plenitud cefálica</span><span class="desc">¿Siente la cabeza diferente? ¿Le duele? (No calificar mareos)</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - No presente</option><option value="1">1 - Muy leve</option><option value="2">2 - Leve</option><option value="3">3 - Moderada</option><option value="4">4 - Moderadamente severa</option><option value="5">5 - Severa</option><option value="6">6 - Muy severa</option><option value="7">7 - Extremadamente severa</option></select></div>
-    <div class="item"><span class="label">Orientación y nublamiento sensorial</span><span class="desc">¿Qué día es hoy? ¿Dónde está? ¿Quién soy yo?</span><select class="ciwa-calc" onchange="calcCiwa()"><option value="0">0 - Orientado y puede hacer sumas seriales</option><option value="1">1 - No está seguro de la fecha o desorientado en la fecha por no más de 2 días calendario</option><option value="2">2 - Desorientado en la fecha por más de 2 días calendario</option><option value="3">3 - Desorientado en el lugar y/o la persona</option><option value="4">4 - Desorientado completamente</option></select></div>
-    <div class="result-panel" id="ciwa-panel"><div>Puntaje CIWA-Ar Total</div><div class="total-score" id="ciwa-score">0</div><div id="ciwa-status" class="interpretation">Abstinencia Leve</div></div>
+<div id="des" class="container">
+    <h1>Escala de Experiencias Disociativas (DES)</h1>
+    <div class="subtitle">Screening para Trastornos Disociativos</div>
+
+    <div class="info-section"><strong>Instrucciones:</strong> 
+<div class="info">
+Este cuestionario consiste de veintiocho preguntas sobre experiencias que UD. puede tener en su vida diaria: Nos interesa cuan a menudo UD. tiene estas experiencias. Es importante, sin embargo, que sus respuestas muestren con qué frecuencia estas experiencias le suceden cuando UD. no está bajo la influencia del alcohol o drogas. 
+</div>
+<div class="info">
+Para responder las preguntas, por favor determine en qué grado la experiencia descrita en la pregunta se aplica a UD. e indique el porcentaje del tiempo UD. tiene la experiencia indicada en la pregunta. <b>Ejemplo:</b>
+<span class="item-desc"> <i>(nunca)</i>←0% <strong>|</strong> 10% <strong>|</strong> 20% <strong>|</strong> 30% <strong>|</strong> 40% <strong>|</strong> 50% <strong>|</strong> 60% <strong>|</strong> 70% <strong>|</strong> 80% <strong>|</strong> 90% <strong>|</strong> 100%→<i>(siempre)</i></span>
+
 </div>
 
-<div id="cows" class="container">
-    <h1>Escala COWS para la abstinencia de opiáceos</h1>
-    <div class="subtitle">COWS (Clinical Opiate Withdrawal Scale): Cuantifica la severidad de la abstinencia de opiáceos</div>
-    <div class="info-section"><strong>Cuándo usar:</strong> Para cuantificar la gravedad de la abstinencia de opiáceos.<br><strong>Perlas clínicas:</strong> Evalúe los síntomas en el contexto del tiempo transcurrido desde la última dosis.</div>
-    <div class="question"><label>1. Frecuencia del pulso en reposo (LPM)</label><small>Medir la frecuencia de pulso después de que el paciente haya estado sentado o acostado durante 1 minuto.</small><select class="cows-calc" onchange="calcCows()"><option value="0"> (0): ≤ 80</option><option value="1">(+1): 81-100</option><option value="2">(+2): 101-120</option><option value="4">(+4): >120</option></select></div>
-    <div class="question"><label>2. Sudoración</label><small>Sudoración no explicada por la temperatura de la habitación ni por la actividad del paciente durante los últimos 30 minutos.</small><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Sin reporte de escalofríos ni flushing (sofocos/rubor/enrojecimiento)</option><option value="1">(+1): Reporte subjetivo de escalofríos o flushing (sofocos/rubor/enrojecimiento)</option><option value="2">(+2): Flushed (rubor/enrojecido) o humedad observable en el rostro</option><option value="3">(+3): Gotas de sudor en la frente o el rostro</option><option value="4">(+4): Sudor que corre por el rostro</option></select></div>
-    <div class="question"><label>3. Observación de inquietud durante la evaluación</label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Capaz de permanecer sentado tranquilo</option><option value="1">(+1): Reporta dificultad para quedarse quieto, pero puede</option><option value="3">(+3): Cambios de posición frecuentes / movimientos extraños</option><option value="5">(+5): Incapaz de quedarse quieto más de unos segundos</option></select></div>
-    <div class="question"><label>4. Tamaño de la pupila</label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Normales o puntiformes</option><option value="1">(+1): Posiblemente más grandes de lo normal</option><option value="2">(+2): Moderadamente dilatadas</option><option value="5">(+5): Dilatadas (solo borde del iris visible)</option></select></div>
-    <div class="question"><label>5. Dolores óseos o articulares</label><small>Solo puntuar el componente atribuido a la abstinencia.</small><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Ausente</option><option value="1">(+1): Malestar difuso leve</option><option value="2">(+2): Dolor difuso severo reportado</option><option value="4">(+4): Se frota articulaciones y no puede estar quieto</option></select></div>
-    <div class="question"><label>6. Rinorrea o Lagrimeo</label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Ausente</option><option value="1">(+1): Congestión u ojos húmedos</option><option value="2">(+2): Goteo nasal o lagrimeo</option><option value="4">(+4): Goteo constante o lágrimas por mejillas</option></select></div>
-    <div class="question"><label>7. Malestar Gastrointestinal (Últimos 30 min)</label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Sin síntomas</option><option value="1">(+1): Calambres abdominales</option><option value="2">(+2): Náuseas o heces blandas</option><option value="3">(+3): Vómitos o diarrea</option><option value="5">(+5): Múltiples episodios de vómitos o diarrea</option></select></div>
-    <div class="question"><label>8. Temblor en manos extendidas</label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Sin temblor</option><option value="1">(+1): Palpable pero no observable</option><option value="2">(+2): Temblor leve observable</option><option value="4">(+4): Temblor grosero o espasmos</option></select></div>
-    <div class="question"><label>9. Bostezos durante la evaluación</label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Sin bostezos</option><option value="1">(+1): 1 o 2 veces</option><option value="2">(+2): 3 o más veces</option><option value="4">(+4): Varias veces por minuto</option></select></div>
-    <div class="question"><label>10. Ansiedad o irritabilidad</label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Ninguna</option><option value="1">(+1): Reporte de aumento de irritabilidad/ansiedad</option><option value="2">(+2): Obviamente irritable o ansioso</option><option value="4">(+4): Dificulta la participación en la evaluación</option></select></div>
-    <div class="question"><label>11. Gooseflesh skin (piel de gallina/piloerección)</label><select class="cows-calc" onchange="calcCows()"><option value="0">(0): Piel lisa</option><option value="3">(+3): Perceptible al tacto o vellos erizados</option><option value="5">(+5): Piloerección prominente</option></select></div>
-    <div class="result-panel"><div>Puntaje Total COWS</div><div class="total-score" id="cows-score">0</div><div id="cows-status" class="interpretation">Abstinencia Mínima</div></div>
+
+
+</div>
+
+    <div id="des-questions">
+        </div>
+    <div class="result-panel" id="des-panel">
+        <div>Puntaje Promedio DES</div>
+        <div class="total-score" id="des-score">0.00</div>
+        <div id="des-status" class="interpretation">Rango No Clínico</div>
+    </div>
+</div>
+
+<div id="pcl5" class="container">
+    <h1>Escala PCL-5</h1>
+    <div class="subtitle">PTSD Checklist for DSM-5</div>
+    <div class="info-section"><strong>Instrucciones:</strong> 
+<div class="info">
+A continuación hay una lista de problemas que a veces tienen las personas en respuesta a una experiencia muy estresante. Por favor, ponga atención a cada problema cuidadosamente y luego conteste por cada uno de los problemas planteados, en relación a:
+</div>
+
+<div class="info"><strong>¿Qué tanto le han molestado en el último mes?</strong>, <i><u>donde</u>:</i>
+<span class="item-desc"> 0: Nada <strong>|</strong> 1: Un poco <strong>|</strong> 2: Moderadamente <strong>|</strong> 3: Bastante <strong>|</strong> 4: Extremadamente </span>
+</div>
+</div>
+
+ <div class="section-title">
+
+</div>
+
+    <div id="pcl-questions">
+        </div>
+    <div class="result-panel" id="pcl-panel">
+        <div>Puntaje Total PCL-5</div>
+        <div class="total-score" id="pcl-score">0</div>
+        <div id="pcl-status" class="interpretation">Debajo del punto de corte</div>
+    </div>
 </div>
 
 <script>
+    // --- LÓGICA DE NAVEGACIÓN ---
     function openTab(evt, name) {
         document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(name).classList.add('active');
-        evt.currentTarget.classList.add('active');
+        if(evt) {
+            evt.currentTarget.classList.add('active');
+        } else {
+            const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(name));
+            if(btn) btn.classList.add('active');
+        }
         window.scrollTo(0,0);
     }
 
+    function searchScales() {
+        let input = document.getElementById('scaleSearch').value.toLowerCase();
+        let tabs = document.querySelectorAll('.tab-btn');
+        let found = false;
+        tabs.forEach(tab => {
+            let text = tab.innerText.toLowerCase();
+            if (text.includes(input) && input !== "") {
+                tab.style.display = "block";
+                if(!found) {
+                    openTab(null, tab.getAttribute('onclick').match(/'([^']+)'/)[1]);
+                    found = true;
+                }
+            } else if (input === "") {
+                tab.style.display = "block";
+            } else {
+                tab.style.display = "none";
+            }
+        });
+    }
+
+    // --- CÁLCULOS BUSH-FRANCIS ---
     function updateBush() {
         let total = 0, pos = 0;
         document.querySelectorAll('.screen-calc').forEach(s => { let v = parseInt(s.value); total += v; if(v>0) pos++; });
         document.querySelectorAll('.add-calc').forEach(s => total += parseInt(s.value));
         document.getElementById('bush-score').innerText = total;
         let st = document.getElementById('bush-status');
-        if(pos >= 2) { st.innerHTML = "<span class='status-positive'>Cribado Positivo: Complete escala</span>"; document.getElementById('additional-sec').classList.add('active-section'); }
-        else { st.innerText = "Cribado Negativo (<2 síntomas)"; document.getElementById('additional-sec').classList.remove('active-section'); }
+        if(pos >= 2) { 
+            st.innerHTML = "<span class='status-positive'>Screening Positivo</span>"; 
+            document.getElementById('additional-sec').classList.add('active-section'); 
+        } else { 
+            st.innerText = "Screening Negativo (<2 síntomas)"; 
+            document.getElementById('additional-sec').classList.remove('active-section'); 
+        }
     }
 
+    // --- CÁLCULOS PAWS ---
     function checkPawsThreshold() {
         let y = document.getElementById('t_yes').checked;
         document.getElementById('paws-questions').style.display = y ? 'block' : 'none';
         document.getElementById('paws-warning').style.display = y ? 'none' : 'block';
     }
-
     function calcPaws() {
         let s = 0, answered = 0;
         for(let i=1; i<=10; i++) document.getElementsByName('p'+i).forEach(o => { if(o.checked) { s += parseInt(o.value); answered++; } });
-        if(answered > 0) {
-            document.getElementById('paws-score').innerText = s;
-            document.getElementById('paws-status').innerText = s < 4 ? "Riesgo BAJO de abstinencia severa de alcohol." : "Riesgo ALTO de abstinencia severa de alcohol.";
-        }
+        document.getElementById('paws-score').innerText = s;
+        document.getElementById('paws-status').innerText = s < 4 ? "Riesgo BAJO" : "Riesgo ALTO de abstinencia severa a alcohol.";
     }
 
+    // --- CÁLCULOS CIWA / COWS ---
     function calcCiwa() {
         let t = 0;
         document.querySelectorAll('.ciwa-calc').forEach(s => t += parseInt(s.value));
         document.getElementById('ciwa-score').innerText = t;
         let st = document.getElementById('ciwa-status'), p = document.getElementById('ciwa-panel');
-        if(t < 8) { st.innerText = "Abstinencia Leve"; p.style.background = "#2e7d32"; }
-        else if(t <= 15) { st.innerText = "Abstinencia Moderada"; p.style.background = "#f57c00"; }
-        else { st.innerText = "Abstinencia Severa"; p.style.background = "#c62828"; }
+        if(t < 9) { st.innerText = "Los pacientes con puntuaciones ≤8 generalmente no requieren el uso de fármacos para manejar la abstinencia."; p.style.background = "#2e7d32"; }
+        else if(t < 20) { st.innerText = "Los pacientes con puntuaciones ≥9 pueden requerir fármacos para manejar la abstinencia."; p.style.background = "#f57c00"; }
+        else { st.innerText = "Los pacientes con puntuaciones ≥20 con frecuencia requieren fármacos para manejar la abstinencia y también pueden requerir ingreso en la UCI para observación por convulsiones o desarrollo de delirium tremens, y la dosificación de los fármacos suele ser más frecuente."; p.style.background = "#c62828"; }
     }
-
     function calcCows() {
         let t = 0;
         document.querySelectorAll('.cows-calc').forEach(s => t += parseInt(s.value));
         document.getElementById('cows-score').innerText = t;
-        let txt = t <= 5 ? "Abstinencia Mínima" : t <= 12 ? "Abstinencia Leve" : t <= 24 ? "Abstinencia Moderada" : t <= 36 ? "Abstinencia Moderadamente Severa" : "Abstinencia Severa";
+        let txt = t <= 5 ? "Abstinencia Mínima" : t <= 12 ? "Abstinencia Leve" : t <= 24 ? "Abstinencia Moderada" : "Abstinencia Severa";
         document.getElementById('cows-status').innerText = txt;
     }
+
+    // --- INTEGRACIÓN ESCALA DES ---
+    const desQuestions = [
+        "<b>Algunas personas tienen la experiencia de ir manejando un automóvil o estar viajando en un microbus y de repente percatarse de que no recuerdan qué ha pasado durante todo o parte del viaje</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas encuentran que a veces están escuchando a alguien hablar y de repente se percatan que no estaban escuchando parte o todo de lo que se estaba diciendo</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas tienen la experiencia de encontrarse a sí mismos en un lugar y no tener idea de cómo llegaron allí</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+        "<b>Algunas personas tienen la experiencia de encontrase a sí mismos vestidos con ropas que no recuerdan habérsela puesto</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas tienen la experiencia de encontrar nuevas cosas entre sus pertenencias que no recuerdan haber comprado</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas en ocasiones encuentran que son abordados por personas que no conocen quien lo llama por otro nombre o insiste en que se han conocido antes</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas a veces tienen la experiencia de sentirse como si estuvieran cerca de ellos o viéndose a si mismo y en realidad se ven a si mismo como si estuvieran mirando a otra persona</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>A algunas personas se les ha dicho que en ocasiones no reconocen amigos o miembros de su familia</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas encuentran que no tienen recuerdos de algunos eventos importantes de su vida. Por ejemplo, asistir a un matrimonio o el haber ido a una graduación</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas tienen la experiencia de haber sido acusados de mentir cuando ellos no creen haber mentido</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas tienen la experiencia de mirarse en el espejo y no reconocerse a sí mismos</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas tienen la experiencia de sentir que otras personas, objetos y el mundo alrededor de ellos no es real.</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas tienen la experiencia que sus cuerpos no les pertenecen a ellos</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas tienen la experiencia de que en ocasiones están recordando un evento pasado tan vívidamente que sienten como si estuvieran re-viviendo ese evento</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas tienen la experiencia de no estar seguros de si las cosas que ellos recuerdan sucedieron realmente o si solo lo soñaron</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas tienen la experiencia de estar en un sitio familiar pero encontrarlo como extraño o desconocido</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas encuentran que cuando están viendo televisión o una película están tan absortos en la historia que no se dan cuenta de otros eventos que suceden a su alrededor</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas encuentran que se involucran tanto en una fantasía que sienten como si realmente les estuviera sucediendo a ellos</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas encuentran que en ocasiones son capaces de ignorar el dolor</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas encuentran que en ocasiones están mirando fijamente al espacio, sin pensar en nada, y no se percatan del paso del tiempo</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas en ocasiones encuentran que cuando están solos hablan en voz alta a si mismos</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas encuentran que en una situación ellos pueden actuar tan diferente comparado con otra situación que sienten casi como si fueran dos personas diferentes</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas en ocasiones encuentran que en ciertas situaciones son capaces de hacer cosas con tal facilidad y espontaneidad que usualmente serían difíciles para ellos (por ejemplo, deportes, trabajo, situaciones sociales, etc.)</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas en ocasiones encuentran que en ciertas situaciones son capaces de hacer cosas con tal facilidad y espontaneidad que usualmente serían difíciles para ellos (por ejemplo, deportes, trabajo, situaciones sociales, etc.)</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas encuentran evidencias de haber hecho cosas que no recuerdan haber hecho.</b>. ",
+ "<b>Algunas persona encuentran escritos, dibujos o notas entre sus pertenencias que ellos deben haber hecho pero no pueden recordar haberlas hecho.</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas a veces encuentran que escuchan voces dentro de su cabeza que les dice que hagan cosas o comentarios sobre cosas que ellos están haciendo</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+ "<b>Algunas personas a veces sienten como si estuvieran mirando al mundo a través de una niebla de manera que las personas y objetos parecen alejados o borrosos</b>. Indique ¿<u>qué porcentaje</u> del tiempo esto le sucede a usted?",
+  
+
+    ];
+
+    function initDES() {
+        const container = document.getElementById('des-questions');
+        desQuestions.forEach((q, i) => {
+            let div = document.createElement('div');
+            div.className = "item";
+            div.innerHTML = `<span class="item-label">${i+1}. ${q}</span>
+            <select class="des-calc" onchange="calcDES()">
+                ${[0,10,20,30,40,50,60,70,80,90,100].map(v => `<option value="${v}">${v}%</option>`).join('')}
+            </select>`;
+            container.appendChild(div);
+        });
+    }
+
+    function calcDES() {
+        let sum = 0, selects = document.querySelectorAll('.des-calc');
+        selects.forEach(s => sum += parseInt(s.value));
+        let avg = (sum / 28).toFixed(2);
+        document.getElementById('des-score').innerText = avg;
+        let st = document.getElementById('des-status'), p = document.getElementById('des-panel');
+        if (avg < 15) { st.innerText = "Rango No Clínico / Normal"; p.style.background = "#2c3e50"; }
+        else if (avg < 28) { st.innerText = "Sintomatología Disociativa Leve"; p.style.background = "#2980b9"; }
+        else if (avg <= 34) { st.innerText = "Sugerente de TEPT"; p.style.background = "#f39c12"; }
+        else if (avg <= 44) { st.innerText = "Sugerente de Trastorno Disociativo"; p.style.background = "#e67e22"; }
+        else { st.innerText = "Alta probabilidad de TID"; p.style.background = "#c0392b"; }
+    }
+
+    // --- INTEGRACIÓN ESCALA PCL-5 ---
+    const pclQuestions = [
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>recuerdos repetidos, perturbadores e indeseados sobre la experiencia estresante</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>sueños repetidos y perturbadores sobre la experiencia estresante</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>sentir o actuar repentinamente como si la experiencia estresante estuviera sucediendo nuevamente</strong> <i>(como si estuviera reviviéndola)</i>?",
+  "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>sentirse muy angustiado cuando algo le hizo recordar la experiencia estresante</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>tener reacciones físicas intensas cuando algo le hizo recordar la experiencia estresante</strong> <i>(por ejemplo, latidos cardiacos muy fuertes, problemas para respirar, o sudoración)</i>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>evitar recuerdos, pensamientos o sentimientos relacionados con la experiencia estresante</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>evitar claves o recordatorios externos de la experiencia estresante</strong> <i>(por ejemplo, personas, lugares, conversaciones, actividades, objetos o situaciones</i>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>dificultad para recordar partes importantes de la experiencia estresante</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>tener creencias negativas fuertes acerca de sí mismo, de otras personas o del mundo</strong> <i>(por ejemplo, tener pensamientos como: soy malo, hay algo en mí que está muy mal, no se puede confiar en nadie, el mundo es completamente peligroso)</i>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>culparse a sí mismo o a otros por la experiencia estresante, o por lo que sucedió después de ésta</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>tener sentimientos negativos intensos, como miedo, terror, ira, culpa o vergüenza</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>pérdida de interés en actividades que antes disfrutaba</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>sentirse distante de otras personas</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>dificultad para sentir emociones positivas</strong> <i>(por ejemplo, ser incapaz de sentir alegría o sentimientos de amor por las personas cercanas a usted</i>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>irritabilidad, explosiones de rabia o actuar agresivamente</strong>?",
+        "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>tomar demasiados riesgos o hacer cosas que pudieron haberle causado daño</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>estar extremadamente alerta, o vigilante, o en guardia</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>sentirse muy nervioso o sobresaltarse fácilmente</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>tener dificultad para concentrarse</strong>?",
+ "Durante el pasado mes, ¿cuánta molestia ha sentido por: <strong>tener dificultad para dormirse o mantener el sueño</strong>?"
+    ];
+
+    function initPCL() {
+        const container = document.getElementById('pcl-questions');
+        pclQuestions.forEach((q, i) => {
+            let div = document.createElement('div');
+            div.className = "item";
+            div.innerHTML = `<span class="question-text">${i+1}. ${q}</span>
+<span class="item-desc">0: Nada | 1: Un poco | 2: Moderadamente | 3: Bastante | 4: Extremadamente</span>
+            <select class="pcl-calc" onchange="calcPCL()">
+                <option value="0">(0) : Nada</option>
+                <option value="1">(+1) : Un poco</option>
+                <option value="2">(+2) : Moderadamente</option>
+                <option value="3">(+3) : Bastante</option>
+                <option value="4">(+4) : Extremadamente</option>
+            </select>`;
+            container.appendChild(div);
+        });
+    }
+
+    function calcPCL() {
+        let total = 0;
+        document.querySelectorAll('.pcl-calc').forEach(s => total += parseInt(s.value));
+        document.getElementById('pcl-score').innerText = total;
+        let st = document.getElementById('pcl-status'), p = document.getElementById('pcl-panel');
+        if (total >= 33) {
+            st.innerText = "Puntaje sugiere probable TEPT";
+            p.style.background = "#c62828";
+        } else {
+            st.innerText = "Debajo del punto de corte clínico";
+            p.style.background = "#2c3e50";
+        }
+    }
+
+    // Inicializar nuevas escalas al cargar
+    window.onload = () => {
+        initDES();
+        initPCL();
+    };
 </script>
+
 </body>
 </html>
